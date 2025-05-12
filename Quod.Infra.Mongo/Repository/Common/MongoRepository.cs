@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Quod.Domain;
-using Quod.Infra.Mongo;
 
-namespace Quod.Infra
+namespace Quod.Infra.Mongo
 {
     public abstract class MongoRepository<T> : IMongoRepository<T>
             where T : class, IEntity

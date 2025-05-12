@@ -14,6 +14,7 @@ namespace Quod.API
             services.AddScoped<IMetadataExtractor, MetadataExtractor>();
             services.AddScoped<IQualityAnalyzer, QualityAnalyzer>();
             services.AddScoped<IDocumentAnalysisService, DocumentAnalysisService>();    
+            services.AddScoped<INotificationService, NotificationService>();
 
         }
     }

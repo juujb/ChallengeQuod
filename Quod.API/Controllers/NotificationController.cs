@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Quod.Domain;
+using SharpCompress.Common;
 
 namespace Quod.API.Controllers
 {
@@ -8,10 +10,15 @@ namespace Quod.API.Controllers
     public class NotificationController : ControllerBase
     {
         private readonly INotificationService _notificationService;
+        private readonly IMapper _mapper;
 
-        public NotificationController(INotificationService notificationService)
+        public NotificationController(
+            INotificationService notificationService,
+            IMapper mapper
+        )
         {
             _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpPost("fraude")]
@@ -21,7 +28,8 @@ namespace Quod.API.Controllers
                 return BadRequest("Dados da notificação não fornecidos");
             try
             {
-                await _notificationService.AddAsync(request);
+                var entity = _mapper.Map<Notification>(request);
+                await _notificationService.AddAsync(entity);
                 return Ok("Notificação recebida com sucesso.");
             }
             catch (Exception ex)

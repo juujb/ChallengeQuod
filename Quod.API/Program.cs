@@ -22,6 +22,8 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapControllers();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

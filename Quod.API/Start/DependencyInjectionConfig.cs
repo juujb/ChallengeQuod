@@ -6,6 +6,7 @@
         {
             ServiceRegistry.Load(services, configuration);
             MongoRegistry.Load(services);
+            AutoMapperRegistry.Load(services);
 
             return services;
         }
