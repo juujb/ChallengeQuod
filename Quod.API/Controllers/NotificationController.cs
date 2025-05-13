@@ -9,11 +9,11 @@ namespace Quod.API.Controllers
     [Route("api/notificacoes")]
     public class NotificationController : ControllerBase
     {
-        private readonly INotificationService _notificationService;
+        private readonly INotificationEntityService _notificationService;
         private readonly IMapper _mapper;
 
         public NotificationController(
-            INotificationService notificationService,
+            INotificationEntityService notificationService,
             IMapper mapper
         )
         {

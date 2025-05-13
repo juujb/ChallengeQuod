@@ -17,7 +17,7 @@ namespace Quod.API.Controllers
         [HttpPost("facial")]
         public async Task<IActionResult> ValidateFacialBiometry([FromForm] BiometryRequestViewModel request)
         {
-            if (request?.ImageFile == null)
+            if (request?.Image == null)
                 return BadRequest("Imagem facial não fornecida");
 
             try
@@ -34,7 +34,7 @@ namespace Quod.API.Controllers
         [HttpPost("fingerprint")]
         public async Task<IActionResult> ValidateFingerPrintBiometry([FromForm] BiometryRequestViewModel request)
         {
-            if (request?.ImageFile == null)
+            if (request?.Image == null)
                 return BadRequest("Imagem da impressão digital não fornecida");
 
             try

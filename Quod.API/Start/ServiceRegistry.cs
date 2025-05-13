@@ -9,12 +9,16 @@ namespace Quod.API
         {
             services.Configure<BiometryValidationOptions>(configuration.GetSection("BiometryValidation"));
 
+            services.AddHttpClient();
             services.AddScoped<IBiometryService, BiometryService>();
             services.AddScoped<IImageValidator, ImageValidator>();
             services.AddScoped<IMetadataExtractor, MetadataExtractor>();
             services.AddScoped<IQualityAnalyzer, QualityAnalyzer>();
             services.AddScoped<IDocumentAnalysisService, DocumentAnalysisService>();    
-            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<INotificationEntityService, NotificationEntityService>();
+            services.AddScoped<IImageCompareService, ImageCompareService>();
+            services.AddScoped<IBiometryEntityService, BiometryEntityService>();
+            services.AddScoped<INotificationRestService, NotificationRestService>();
 
         }
     }

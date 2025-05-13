@@ -1,7 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
-using MongoDB.Driver;
 using Quod.Domain;
 using Quod.Infra.Mongo;
 
@@ -14,6 +13,7 @@ namespace Quod.API
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
             services.AddSingleton<INotificationRepository, NotificationRepository>();
+            services.AddSingleton<IBiometryRepository, BiometryRepository>();
         }
 
 
