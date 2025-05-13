@@ -2,6 +2,6 @@
 {
     public interface IMetadataExtractor
     {
-        Task<ImageMetadata> ExtractMetadataAsync(byte[] imageData);
+        Task<ImageMetadataViewModel> ExtractMetadataAsync(byte[] imageData);
     }
 }

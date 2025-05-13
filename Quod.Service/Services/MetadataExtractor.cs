@@ -11,9 +11,9 @@ namespace Quod.Service
         {;
         }
 
-        public async Task<ImageMetadata> ExtractMetadataAsync(byte[] imageData)
+        public async Task<ImageMetadataViewModel> ExtractMetadataAsync(byte[] imageData)
         {
-            var metadata = new ImageMetadata
+            var metadata = new ImageMetadataViewModel
             {
                 DeviceInfo = new DeviceViewModel(),
                 RawMetadata = new Dictionary<string, string>()
@@ -23,6 +23,7 @@ namespace Quod.Service
             {
                 using var ms = new MemoryStream(imageData);
                 var image = await Image.LoadAsync(ms);
+                ExifProfile? imageMetaData = image.Metadata.ExifProfile;
 
                 if (image.Metadata.ExifProfile != null)
                 {
@@ -88,7 +89,7 @@ namespace Quod.Service
             return metadata;
         }
 
-        private static bool TryExtractGpsData(ExifProfile exif, out GeoLocation? location)
+        private static bool TryExtractGpsData(ExifProfile exif, out GeoLocationViewModel? location)
         {
             location = null;
             bool hasGpsData = false;
@@ -114,7 +115,7 @@ namespace Quod.Service
                         lon = -lon;
                     }
 
-                    location = new GeoLocation { Latitude = lat, Longitude = lon };
+                    location = new GeoLocationViewModel { Latitude = lat, Longitude = lon };
                     hasGpsData = true;
                 }
             }

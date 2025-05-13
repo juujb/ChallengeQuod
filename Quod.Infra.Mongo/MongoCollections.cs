@@ -3,5 +3,6 @@
     public static class MongoCollections
     {
         public const string Notification = "Notification";
+        public const string Biometry = "Biometry";
     }
 }
