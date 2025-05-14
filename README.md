@@ -29,7 +29,7 @@ Para executar a API localmente, siga os seguintes passos:
     * No seu terminal, navegue até o diretório raiz do projeto da API (onde o arquivo `.csproj` está localizado).
 
 4.  **Configuração do MongoDB:**
-    * Este projeto utiliza o MongoDB para armazenar os dados. Você precisará configurar a string de conexão no arquivo de configuração da aplicação (geralmente `appsettings.json` ou `appsettings.Development.json` para ambiente de desenvolvimento).
+    * Este projeto utiliza o MongoDB para armazenar os dados. Você precisará configurar a string de conexão no arquivo de configuração da aplicação.
     * Localize a seção `"MongoDb"` e preencha o valor de `"ConnectionString"` com a sua string de conexão do MongoDB:
         ```json
         "MongoDb": {
