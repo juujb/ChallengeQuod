@@ -6,8 +6,9 @@ namespace Quod.API
     {
         public static void Load(IServiceCollection services)
         {
-            services.AddSingleton<AutoMapper.IConfigurationProvider>((c) => AutomapperConfiguration.Configure());
-            services.AddSingleton((c) => AutomapperConfiguration.RegisterMappings());
+            var config = AutomapperConfiguration.Configure();
+            services.AddSingleton<AutoMapper.IConfigurationProvider>(config);
+            services.AddSingleton<IMapper>(config.CreateMapper());
         }
 
     }

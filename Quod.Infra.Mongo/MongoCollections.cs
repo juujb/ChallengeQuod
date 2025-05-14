@@ -4,5 +4,6 @@
     {
         public const string Notification = "Notification";
         public const string Biometry = "Biometry";
+        public const string DocumentAnalysis = "DocumentAnalysis";
     }
 }

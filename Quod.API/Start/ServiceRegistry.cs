@@ -19,6 +19,7 @@ namespace Quod.API
             services.AddScoped<IImageCompareService, ImageCompareService>();
             services.AddScoped<IBiometryEntityService, BiometryEntityService>();
             services.AddScoped<INotificationRestService, NotificationRestService>();
+            services.AddScoped<IDocumentAnalysisEntityService, DocumentAnalysisEntityService>();
 
         }
     }

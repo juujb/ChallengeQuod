@@ -14,6 +14,7 @@ namespace Quod.API
 
             services.AddSingleton<INotificationRepository, NotificationRepository>();
             services.AddSingleton<IBiometryRepository, BiometryRepository>();
+            services.AddSingleton<IDocumentAnalysisRepository, DocumentAnalysisRepository>();
         }
 
 

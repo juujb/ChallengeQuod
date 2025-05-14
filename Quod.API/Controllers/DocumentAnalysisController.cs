@@ -16,9 +16,7 @@ public class DocumentAnalysisController : ControllerBase
     public async Task<ActionResult<DocumentAnalysisResultViewModel>> AnalyzeDocument([FromForm] DocumentAnalysisRequestViewModel request)
     {
         if (!ModelState.IsValid)
-        {
             return BadRequest(ModelState);
-        }
 
         try
         {

@@ -1,4 +1,5 @@
 ﻿using Quod.Domain;
+using System.Transactions;
 
 namespace Quod.Service
 {
@@ -100,14 +101,20 @@ namespace Quod.Service
 
                 result.QualityScore = qualityResult?.QualityScore ?? 0;
 
-                var entity = MapRequestToBiometryEntity(request, result);
-                var notification = MapRequestToNotification(request, result);
+                List<Task> tasks = new (2);
 
-                List<Task> tasks = new List<Task>(2);
+                Guid? transactionId = null;
+
+                if (result.Fraud.IsFraud)
+                {
+                    var notification = MapRequestToNotification(request, result);
+                    transactionId = notification.TransactionId;
+                    tasks.Add(_notificationRestService.PostAsync(notification));
+                }
+
+                var entity = MapRequestToBiometryEntity(request, result, transactionId);
 
                 tasks.Add(_biometryEntityService.AddAsync(entity));
-
-                if (result.Fraud.IsFraud) tasks.Add(_notificationRestService.PostAsync(notification));
 
                 await Task.WhenAll(tasks);
             }
@@ -136,21 +143,20 @@ namespace Quod.Service
                 },
                 NotificationChannels = new List<string> { "email", "sms" },
                 NotifiedBy = "biometry-service",
-                Metadata = result.Metadata != null ? new MetadataViewModel
+                Metadata =  new MetadataViewModel
                 {
                     Latitude = result.Metadata.Location?.Latitude ?? 0,
                     Longitude = result.Metadata.Location?.Longitude ?? 0,
-                    SourceIp = result.Metadata.RawMetadata.ContainsKey("ipOrigem")
-                        ? result.Metadata.RawMetadata["ipOrigem"]
-                        : string.Empty
-                } : null
+                    SourceIp = request.SourceIp
+                }
             };
         }
 
-        private static Biometry MapRequestToBiometryEntity(BiometryRequestViewModel request, BiometryValidationResult result)
+        private static Biometry MapRequestToBiometryEntity(BiometryRequestViewModel request, BiometryValidationResult result, Guid? transactionId)
         {
             return new Biometry
             {
+                TransactionId = transactionId,
                 BiometryType = result.BiometryType,
                 CaptureDate = request.CaptureDate,
                 DeviceInfo = new Device
@@ -159,14 +165,12 @@ namespace Quod.Service
                     Model = request.DeviceInfo.Model,
                     OperatingSystem = request.DeviceInfo.OS
                 },
-                Metadata = result.Metadata != null ? new Metadata
+                Metadata = new Metadata
                 {
                     Latitude = result.Metadata.Location?.Latitude ?? 0,
                     Longitude = result.Metadata.Location?.Longitude ?? 0,
-                    SourceIp = result.Metadata.RawMetadata.ContainsKey("ipOrigem")
-                        ? result.Metadata.RawMetadata["ipOrigem"]
-                        : string.Empty
-                } : null,
+                    SourceIp = request.SourceIp
+                },
                 QualityScore = result.QualityScore,
                 SimilarityScore = result.SimilarityScore,
                 ValidationErrors = result.ValidationErrors,

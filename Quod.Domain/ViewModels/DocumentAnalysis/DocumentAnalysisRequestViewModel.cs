@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Text.Json.Serialization;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Quod.Domain
 {
@@ -9,10 +9,10 @@ namespace Quod.Domain
 
         public required IFormFile FaceImageFile { get; set; }
 
-        [JsonIgnore]
+        [SwaggerIgnore]
         public byte[]? DocumentImage { get; set; }
 
-        [JsonIgnore]
+        [SwaggerIgnore]
         public byte[]? FaceImage { get; set; }
     }
 }

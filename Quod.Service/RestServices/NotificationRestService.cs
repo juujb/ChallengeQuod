@@ -9,12 +9,12 @@ namespace Quod.Service
 {
     public class NotificationRestService : INotificationRestService
     {
-        private static readonly HttpClient _httpClient = new HttpClient();
+        private static readonly HttpClient _httpClient = new ();
         private readonly string _notificationUrl;
 
         public NotificationRestService(IConfiguration configuration)
         {
-            _notificationUrl = configuration["NotificationServiceUrl"] ?? "http://localhost:5023/api/notificacoes/fraude";
+            _notificationUrl = configuration["NotificationServiceUrl"] ?? "https://localhost:7274/api/notificacoes/fraude";
         }
 
         public async Task PostAsync(NotificationViewModel notification)

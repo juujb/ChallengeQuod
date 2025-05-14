@@ -6,7 +6,7 @@ namespace Quod.Service
     public class ImageCompareService : IImageCompareService
     {
 
-        public (bool, double) IsImageSimilar(byte[] imageBytes1, byte[] imageBytes2, double threshold = 0.5)
+        public (bool, double) IsImageSimilar(byte[] imageBytes1, byte[] imageBytes2, double threshold = 0.4)
         {
             double score = GetCompareScore(imageBytes1, imageBytes2);
             return (score < threshold, score);
@@ -23,9 +23,6 @@ namespace Quod.Service
             using var histogram1 = GetHistogramGrayScale(imagem1, bins);
             using var histogram2 = GetHistogramGrayScale(imagem2, bins);
 
-            Cv2.Normalize(histogram1, histogram1, 0, 1, NormTypes.MinMax);
-            Cv2.Normalize(histogram2, histogram2, 0, 1, NormTypes.MinMax);
-
             double score = Cv2.CompareHist(histogram1, histogram2, HistCompMethods.Bhattacharyya);
 
             return score;
@@ -33,10 +30,12 @@ namespace Quod.Service
 
         private static Mat GetHistogramGrayScale(Mat imagem, int numeroDeBins)
         {
-            Rangef intervalos = new ( 0, 256 );
-            Mat histograma = new ();
-            Cv2.CalcHist([imagem], [1], null, histograma, 1,  [ numeroDeBins ], [intervalos]);
-            return histograma;
+            Rangef range = new(0, 256);
+            int[] histSize = new int[] { 256 };
+            int[] dim = new int[] { 0 };
+            Mat histogram = new ();
+            Cv2.CalcHist([imagem], [0], null, histogram, 1, histSize, [range]);
+            return histogram;
         }
 
     }

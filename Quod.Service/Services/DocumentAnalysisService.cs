@@ -5,13 +5,20 @@ namespace Quod.Service
     public class DocumentAnalysisService : IDocumentAnalysisService
     {
         private readonly IImageValidator _imageValidator;
+        private readonly IImageCompareService _imageCompareService;
+        private readonly IDocumentAnalysisEntityService _documentAnalysisEntityService;
 
-        public DocumentAnalysisService(IImageValidator imageValidator)
+        public DocumentAnalysisService(
+            IImageValidator imageValidator,
+            IImageCompareService imageCompareService,
+            IDocumentAnalysisEntityService documentAnalysisEntityService)
         {
             _imageValidator = imageValidator ?? throw new ArgumentNullException(nameof(imageValidator));
+            _imageCompareService = imageCompareService ?? throw new ArgumentNullException(nameof(imageCompareService));
+            _documentAnalysisEntityService = documentAnalysisEntityService ?? throw new ArgumentNullException(nameof(documentAnalysisEntityService));
         }
 
-        public async Task<DocumentAnalysisResultViewModel> AnalyzeDocumentAsync(DocumentAnalysisRequestViewModel request)
+        public async Task<DocumentAnalysisResultViewModel> AnalyzeDocumentAsync(DocumentAnalysisRequestViewModel request) // Algumas simulações de validação foram feitas com Random() para simular a lógica de validação real.
         {
             var result = new DocumentAnalysisResultViewModel();
 
@@ -34,39 +41,40 @@ namespace Quod.Service
                 return result;
             }
 
-            double faceMatchScore = new Random().NextDouble() * 0.8 + 0.2;
-            if (faceMatchScore < 0.5)
+            var (isSimilar, faceMatchScore) = _imageCompareService.IsImageSimilar(request.DocumentImage, request.FaceImage, 0.8); // Em um caso real, deveria ser verificado apenas o rosto contido em um trecho do documento (ex: RG ou CNH)
+            if (!isSimilar)
             {
                 result.IsValid = false;
                 result.ValidationErrors.Add($"A pontuação de similaridade da face é baixa: {faceMatchScore:P}");
             }
 
-            bool documentStructureValid = new Random().Next(0, 2) == 1;
-            bool fontsConsistent = new Random().Next(0, 2) == 1;
+            string documentText = "Texto extraído do RG"; // Aqui deveria ser implementada a lógica de extração de texto do documento, utilizando OCR ou outra técnica.
 
-            if (!documentStructureValid)
+            result.AnalysisDetails = new DocumentAnalysisDetailsViewModel
             {
-                result.IsValid = false;
-                result.ValidationErrors.Add("A estrutura do documento parece inválida.");
-            }
+                FaceMatchScore = faceMatchScore,
+                DocumentText = documentText
+            };
 
-            if (!fontsConsistent)
-            {
-                result.IsValid = false;
-                result.ValidationErrors.Add("As fontes no documento parecem inconsistentes.");
-            }
+            var entity = MapRequestToDocumentAnalysisEntity(result);
 
-            if (result.IsValid)
-            {
-                result.AnalysisDetails = new DocumentAnalysisDetails
-                {
-                    FaceMatchScore = faceMatchScore,
-                    DocumentStructureValid = documentStructureValid,
-                    FontsConsistent = fontsConsistent
-                };
-            }
+            await _documentAnalysisEntityService.AddAsync(entity);
 
             return result;
+        }
+
+        private DocumentAnalysis MapRequestToDocumentAnalysisEntity(DocumentAnalysisResultViewModel result)
+        {
+            return new DocumentAnalysis
+            {
+                IsValid = result.IsValid,
+                ValidationErrors = result.ValidationErrors,
+                AnalysisDetails = new DocumentAnalysisDetails()
+                {
+                    FaceMatchScore = result.AnalysisDetails?.FaceMatchScore,
+                    DocumentText = result.AnalysisDetails?.DocumentText
+                }
+            };
         }
 
     }

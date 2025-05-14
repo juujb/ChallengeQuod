@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace Quod.Domain
 {
@@ -32,13 +34,13 @@ namespace Quod.Domain
     public class DeviceViewModel
     {
         [JsonProperty("fabricante")]
-        public string Manufacturer { get; set; }
+        public string Manufacturer { get; set; } = string.Empty;
 
         [JsonProperty("modelo")]
-        public string Model { get; set; }
+        public string Model { get; set; } = string.Empty;
 
         [JsonProperty("sistemaOperacional")]
-        public string OperatingSystem { get; set; }
+        public string OperatingSystem { get; set; } = string.Empty;
     }
 
     public class MetadataViewModel
@@ -50,6 +52,8 @@ namespace Quod.Domain
         public double Longitude { get; set; }
 
         [JsonProperty("ipOrigem")]
-        public string SourceIp { get; set; }
+        public string SourceIp { get; set; } = string.Empty;
     }
+
+
 }

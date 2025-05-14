@@ -22,6 +22,7 @@ namespace Quod.API.Controllers
 
             try
             {
+                request.SourceIp = HttpContext.Connection.RemoteIpAddress.ToString();
                 var result = await _biometryService.CheckFacialBiometryAsync(request);
                 return Ok(result);
             }
@@ -39,6 +40,7 @@ namespace Quod.API.Controllers
 
             try
             {
+                request.SourceIp = HttpContext.Connection.RemoteIpAddress.ToString();
                 var result = await _biometryService.CheckFingerPrintBiometryAsync(request);
                 return Ok(result);
             }

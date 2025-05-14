@@ -4,13 +4,12 @@
     {
         public bool IsValid { get; set; }
         public List<string> ValidationErrors { get; set; } = new List<string>();
-        public DocumentAnalysisDetails? AnalysisDetails { get; set; }
+        public DocumentAnalysisDetailsViewModel? AnalysisDetails { get; set; }
     }
 
-    public class DocumentAnalysisDetails
+    public class DocumentAnalysisDetailsViewModel
     {
         public double? FaceMatchScore { get; set; }
-        public bool? DocumentStructureValid { get; set; }
-        public bool? FontsConsistent { get; set; }
+        public string DocumentText { get; set; }  
     }
 }

@@ -7,9 +7,13 @@ namespace Quod.API
     {
         public NotificationProfile()
         {
-            CreateMap<Notification, NotificationViewModel>().ReverseMap();
-            CreateMap<DeviceViewModel, DeviceViewModel>().ReverseMap();
-            CreateMap<Metadata, MetadataViewModel>().ReverseMap();  
+            CreateMap<NotificationViewModel, Notification>();
+            CreateMap<DeviceViewModel, Device>();
+            CreateMap<MetadataViewModel, Metadata>();
+
+            CreateMap<Notification, NotificationViewModel>();
+            CreateMap<Device, DeviceViewModel>();
+            CreateMap<Metadata, MetadataViewModel>();
         }
     }
 }

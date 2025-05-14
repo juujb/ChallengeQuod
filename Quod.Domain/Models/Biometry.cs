@@ -8,6 +8,9 @@ namespace Quod.Domain
         [BsonElement("tipoBiometria")]
         public BiometryType BiometryType { get; set; }
 
+        [BsonElement("transacaoId")]
+        public Guid? TransactionId { get; set; }
+
         [BsonElement("dataCaptura")]
         public DateTime CaptureDate { get; set; }
 

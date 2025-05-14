@@ -3,11 +3,11 @@ using Quod.Domain;
 
 namespace Quod.Infra.Mongo
 {
-    public class NotificationRepository : MongoRepository<Notification>, INotificationRepository
+    public class DocumentAnalysisRepository : MongoRepository<DocumentAnalysis>, IDocumentAnalysisRepository
     {
-        public override string CollectionName => MongoCollections.Notification;
+        public override string CollectionName => MongoCollections.DocumentAnalysis;
 
-        public NotificationRepository(IOptions<DefaultMongoDbSettings> settings) : base(settings)
+        public DocumentAnalysisRepository(IOptions<DefaultMongoDbSettings> settings) : base(settings)
         {
 
         }
