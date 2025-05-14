@@ -48,6 +48,4 @@ Para executar a API localmente, siga os seguintes passos:
 
 6.  **Acessar a API:**
     * Com a API em execução, você pode interagir com os endpoints utilizando um cliente HTTP (como Postman, Insomnia, ou até mesmo o seu navegador para requisições GET simples).
-    A documentação Swagger estará disponível automaticamente após iniciar o container:
-
-     http://localhost:5000/swagger
+    A documentação Swagger estará disponível automaticamente após iniciar a api: [http://localhost:5000/swagger](http://localhost:5000/swagger)
