@@ -1,9 +1,6 @@
-﻿using Quod.Domain;
-using System.Net.Http;
+﻿using Microsoft.Extensions.Configuration;
+using Quod.Domain;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using SixLabors.ImageSharp;
 
 namespace Quod.Service
 {
